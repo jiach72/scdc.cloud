@@ -22,8 +22,8 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
-          # 为了首次确保根目录存在，我们先通过 SSH 创建目标夹
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "mkdir -p /opt/scdc.cloud"
+          # 为了首次确保根目录存在，我们基于当前用户的主目录创建目标夹
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "mkdir -p ~/scdc.cloud"
 
       - name: 📦 Rsync 传输增量安全代码
         run: |
@@ -33,7 +33,7 @@ jobs:
                      --exclude='.next' \
                      --exclude='out' \
                      --exclude='.env*' \
-                     -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/opt/scdc.cloud/
+                     -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:~/scdc.cloud/
 
       - name: 🐳 触发服务端 Docker 编译与热重启
         uses: appleboy/ssh-action@master
@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd /opt/scdc.cloud
+            cd ~/scdc.cloud
             
             echo "🚀 1. 启动基于物理网卡的 Nginx 网络防线 (host网络模式)..."
             cd deployment
