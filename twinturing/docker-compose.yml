@@ -1,19 +1,43 @@
-version: '3.8'
-
 services:
+  # 应用 - Next.js (Twinturing SaaS)
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: twinturing-app
+    ports:
+      - '3001:3001'
+    environment:
+      - DATABASE_URL=postgresql://twinturing:${POSTGRES_PASSWORD:-twinturing}@postgres:5432/twinturing
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-twinturing_secret_change_me}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-https://twinturing.scdc.cloud}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+
+  # 数据库 - PostgreSQL
   postgres:
     image: postgres:16-alpine
     container_name: twinturing-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: twinturing
-      POSTGRES_PASSWORD: twinturing
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-twinturing}
       POSTGRES_DB: twinturing
     ports:
       - '5433:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U twinturing']
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+  # 缓存 - Redis
   redis:
     image: redis:7-alpine
     container_name: twinturing-redis

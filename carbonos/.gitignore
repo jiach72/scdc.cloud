@@ -55,8 +55,9 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+# 注意：不使用 lib/ 通配，否则会误排除 Next.js 的 src/lib/ 目录
+/backend/lib/
+/backend/lib64/
 parts/
 sdist/
 var/
