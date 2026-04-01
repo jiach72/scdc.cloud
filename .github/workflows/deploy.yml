@@ -1,0 +1,70 @@
+name: SCDC Monorepo 自动化单机布署流水线
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  Deploy_To_Production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ 检出最新源码
+        uses: actions/checkout@v4
+
+      - name: 🔑 注入 SSH 私钥
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+
+      - name: 🛡️ 添加 Known Hosts (绕过首次连接确认)
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+          # 为了首次确保根目录存在，我们先通过 SSH 创建目标夹
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "mkdir -p /opt/scdc.cloud"
+
+      - name: 📦 Rsync 传输增量安全代码
+        run: |
+          # 核心机制：我们不使用 --delete 参数，这样绝对不会误删用户存在物理机上的数据库卷 (volumes) 和本地上传好的私有 .env
+          rsync -avz --exclude='.git' \
+                     --exclude='node_modules' \
+                     --exclude='.next' \
+                     --exclude='out' \
+                     --exclude='.env*' \
+                     -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/opt/scdc.cloud/
+
+      - name: 🐳 触发服务端 Docker 编译与热重启
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /opt/scdc.cloud
+            
+            echo "🚀 1. 启动基于物理网卡的 Nginx 网络防线 (host网络模式)..."
+            cd deployment
+            docker compose up -d
+            cd ..
+            
+            echo "🔥 2. 全量构建 CarbonOS 及其数据库..."
+            cd carbonos
+            docker compose up -d --build
+            cd ..
+            
+            echo "🔥 3. 全量构建 Twinturing 及其隔离态环境..."
+            cd twinturing
+            docker compose up -d --build
+            cd ..
+            
+            echo "🔥 4. 全量构建 MirrorAI-Web 及其系统..."
+            cd mirrorai-web
+            docker compose up -d --build
+            cd ..
+            
+            echo "🧹 5. 打扫构建垃圾，释出闲置镜像体积..."
+            docker image prune -a -f --filter "until=24h"
+            
+            echo "🎉 [SCDC.CLOUD] 全套产品线更新抵达并已发布上线！"

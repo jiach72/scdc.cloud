@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  gateway:
+    image: nginx:alpine
+    container_name: scdc-gateway
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    # 解释: 利用 host 网络模式，让容器里的 80 端口直接绑定到服务器真实的物理宿主机 80 端口，
+    # 并能直接访问 127.0.0.1:3000、3001 等各个独立的 Docker 微服务映射出的暴露端口。
+    # 这种做法直接避开了极其麻烦的跨沙箱虚拟网段桥接(bridge)配置。
