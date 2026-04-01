@@ -46,25 +46,25 @@ jobs:
             
             echo "🚀 1. 启动基于物理网卡的 Nginx 网络防线 (host网络模式)..."
             cd deployment
-            docker compose up -d
+            sudo docker compose up -d
             cd ..
             
             echo "🔥 2. 全量构建 CarbonOS 及其数据库..."
             cd carbonos
-            docker compose up -d --build
+            sudo docker compose up -d --build
             cd ..
             
             echo "🔥 3. 全量构建 Twinturing 及其隔离态环境..."
             cd twinturing
-            docker compose up -d --build
+            sudo docker compose up -d --build
             cd ..
             
             echo "🔥 4. 全量构建 MirrorAI-Web 及其系统..."
             cd mirrorai-web
-            docker compose up -d --build
+            sudo docker compose up -d --build
             cd ..
             
             echo "🧹 5. 打扫构建垃圾，释出闲置镜像体积..."
-            docker image prune -a -f --filter "until=24h"
+            sudo docker image prune -a -f --filter "until=24h"
             
             echo "🎉 [SCDC.CLOUD] 全套产品线更新抵达并已发布上线！"
