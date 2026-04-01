@@ -1,0 +1,11 @@
+CONTAINER ID   IMAGE                 COMMAND                  CREATED          STATUS                         PORTS                                         NAMES
+2b38473c4e58   carbonos-frontend     "docker-entrypoint.s鈥?   3 minutes ago    Created                                                                      carbonos-frontend-1
+98202bc9ed69   carbonos-backend      "uvicorn app.main:ap鈥?   3 minutes ago    Restarting (1) 7 seconds ago                                                 carbonos-backend-1
+6705952aaa35   postgres:15-alpine    "docker-entrypoint.s鈥?   3 minutes ago    Up 3 minutes (healthy)         0.0.0.0:5432->5432/tcp, :::5432->5432/tcp     carbonos-postgres-1
+eddf0f91ecb0   redis:7-alpine        "docker-entrypoint.s鈥?   3 minutes ago    Up 3 minutes                   6379/tcp                                      carbonos-redis-1
+ee6c7b3b17c1   influxdb:2.7-alpine   "/entrypoint.sh infl鈥?   3 minutes ago    Up 3 minutes                   0.0.0.0:8086->8086/tcp, :::8086->8086/tcp     carbonos-influxdb-1
+c72fd2094617   redis:7-alpine        "docker-entrypoint.s鈥?   45 minutes ago   Up 45 minutes                  127.0.0.1:6381->6379/tcp                      mirrorai-redis
+d5c578b0f4b6   postgres:16-alpine    "docker-entrypoint.s鈥?   45 minutes ago   Up 45 minutes                  127.0.0.1:5434->5432/tcp                      mirrorai-postgres
+e1324bcea760   postgres:16-alpine    "docker-entrypoint.s鈥?   45 minutes ago   Up 45 minutes                  0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp   twinturing-db
+c03a88f88eca   redis:7-alpine        "docker-entrypoint.s鈥?   45 minutes ago   Up 45 minutes                  0.0.0.0:6380->6379/tcp, [::]:6380->6379/tcp   twinturing-redis
+0a411a7fb665   nginx:alpine          "/docker-entrypoint.鈥?   47 minutes ago   Up 47 minutes                                                                scdc-gateway

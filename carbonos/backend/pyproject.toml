@@ -21,6 +21,7 @@ dependencies = [
     "psycopg2-binary>=2.9.9",  # Alembic 同步迁移需要
     "structlog>=24.1.0",  # P1-004: 结构化日志
     "prometheus-client>=0.20.0",  # P2: Prometheus 监控
+    "bcrypt>=4.0.0",  # 密码哈希（security.py 直接使用）
 ]
 
 [project.optional-dependencies]
