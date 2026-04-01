@@ -1,0 +1,89 @@
+CONTAINER ID   IMAGE                 COMMAND                  CREATED             STATUS                    PORTS                                         NAMES
+c6e10174a613   carbonos-frontend     "docker-entrypoint.s鈥?   7 minutes ago       Up 7 minutes              0.0.0.0:3000->3000/tcp, :::3000->3000/tcp     carbonos-frontend-1
+ca17586059e0   carbonos-backend      "uvicorn app.main:ap鈥?   7 minutes ago       Up 7 minutes (healthy)    0.0.0.0:8000->8000/tcp, :::8000->8000/tcp     carbonos-backend-1
+6705952aaa35   postgres:15-alpine    "docker-entrypoint.s鈥?   20 minutes ago      Up 20 minutes (healthy)   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp     carbonos-postgres-1
+eddf0f91ecb0   redis:7-alpine        "docker-entrypoint.s鈥?   20 minutes ago      Up 20 minutes             6379/tcp                                      carbonos-redis-1
+ee6c7b3b17c1   influxdb:2.7-alpine   "/entrypoint.sh infl鈥?   20 minutes ago      Up 20 minutes             0.0.0.0:8086->8086/tcp, :::8086->8086/tcp     carbonos-influxdb-1
+c72fd2094617   redis:7-alpine        "docker-entrypoint.s鈥?   About an hour ago   Up About an hour          127.0.0.1:6381->6379/tcp                      mirrorai-redis
+d5c578b0f4b6   postgres:16-alpine    "docker-entrypoint.s鈥?   About an hour ago   Up About an hour          127.0.0.1:5434->5432/tcp                      mirrorai-postgres
+e1324bcea760   postgres:16-alpine    "docker-entrypoint.s鈥?   About an hour ago   Up About an hour          0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp   twinturing-db
+c03a88f88eca   redis:7-alpine        "docker-entrypoint.s鈥?   About an hour ago   Up About an hour          0.0.0.0:6380->6379/tcp, [::]:6380->6379/tcp   twinturing-redis
+0a411a7fb665   nginx:alpine          "/docker-entrypoint.鈥?   About an hour ago   Up About an hour                                                        scdc-gateway
+===
+twinturing-redis  | 1:C 01 Apr 2026 14:32:12.546 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+twinturing-redis  | 1:C 01 Apr 2026 14:32:12.547 * oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+twinturing-redis  | 1:C 01 Apr 2026 14:32:12.547 * Redis version=7.4.8, bits=64, commit=00000000, modified=0, pid=1, just started
+twinturing-redis  | 1:C 01 Apr 2026 14:32:12.547 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+twinturing-redis  | 1:M 01 Apr 2026 14:32:12.550 * monotonic clock: POSIX clock_gettime
+twinturing-redis  | 1:M 01 Apr 2026 14:32:12.553 * Running mode=standalone, port=6379.
+twinturing-redis  | 1:M 01 Apr 2026 14:32:12.553 * Server initialized
+twinturing-redis  | 1:M 01 Apr 2026 14:32:12.555 * Ready to accept connections tcp
+twinturing-db     | 2026-04-01 14:32:13.849 UTC [41] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+twinturing-db     | 2026-04-01 14:32:13.857 UTC [44] LOG:  database system was shut down at 2026-04-01 14:32:13 UTC
+twinturing-db     | 2026-04-01 14:32:13.864 UTC [41] LOG:  database system is ready to accept connections
+twinturing-db     |  done
+twinturing-db     | server started
+twinturing-db     | CREATE DATABASE
+twinturing-db     | 
+twinturing-db     | 
+twinturing-db     | /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+twinturing-db     | 
+twinturing-db     | waiting for server to shut down....2026-04-01 14:32:14.022 UTC [41] LOG:  received fast shutdown request
+twinturing-db     | 2026-04-01 14:32:14.025 UTC [41] LOG:  aborting any active transactions
+twinturing-db     | 2026-04-01 14:32:14.029 UTC [41] LOG:  background worker "logical replication launcher" (PID 47) exited with exit code 1
+twinturing-db     | 2026-04-01 14:32:14.033 UTC [42] LOG:  shutting down
+twinturing-db     | 2026-04-01 14:32:14.035 UTC [42] LOG:  checkpoint starting: shutdown immediate
+twinturing-db     | 2026-04-01 14:32:14.076 UTC [42] LOG:  checkpoint complete: wrote 926 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.023 s, sync=0.010 s, total=0.043 s; sync files=301, longest=0.002 s, average=0.001 s; distance=4272 kB, estimate=4272 kB; lsn=0/191E938, redo lsn=0/191E938
+twinturing-db     | 2026-04-01 14:32:14.088 UTC [41] LOG:  database system is shut down
+twinturing-db     |  done
+twinturing-db     | server stopped
+twinturing-db     | 
+twinturing-db     | PostgreSQL init process complete; ready for start up.
+twinturing-db     | 
+twinturing-db     | 2026-04-01 14:32:14.151 UTC [1] LOG:  starting PostgreSQL 16.13 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+twinturing-db     | 2026-04-01 14:32:14.151 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+twinturing-db     | 2026-04-01 14:32:14.151 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+twinturing-db     | 2026-04-01 14:32:14.156 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+twinturing-db     | 2026-04-01 14:32:14.164 UTC [57] LOG:  database system was shut down at 2026-04-01 14:32:14 UTC
+twinturing-db     | 2026-04-01 14:32:14.171 UTC [1] LOG:  database system is ready to accept connections
+twinturing-db     | 2026-04-01 14:37:14.260 UTC [55] LOG:  checkpoint starting: time
+twinturing-db     | 2026-04-01 14:37:18.484 UTC [55] LOG:  checkpoint complete: wrote 45 buffers (0.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=4.211 s, sync=0.006 s, total=4.224 s; sync files=12, longest=0.004 s, average=0.001 s; distance=260 kB, estimate=260 kB; lsn=0/195FC18, redo lsn=0/195FBE0
+===
+mirrorai-redis  | 1:C 01 Apr 2026 14:32:13.080 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+mirrorai-redis  | 1:C 01 Apr 2026 14:32:13.081 * oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+mirrorai-redis  | 1:C 01 Apr 2026 14:32:13.081 * Redis version=7.4.8, bits=64, commit=00000000, modified=0, pid=1, just started
+mirrorai-redis  | 1:C 01 Apr 2026 14:32:13.081 * Configuration loaded
+mirrorai-redis  | 1:M 01 Apr 2026 14:32:13.081 * monotonic clock: POSIX clock_gettime
+mirrorai-redis  | 1:M 01 Apr 2026 14:32:13.083 * Running mode=standalone, port=6379.
+mirrorai-redis  | 1:M 01 Apr 2026 14:32:13.083 * Server initialized
+mirrorai-redis  | 1:M 01 Apr 2026 14:32:13.083 * Ready to accept connections tcp
+mirrorai-postgres  | 2026-04-01 14:32:14.347 UTC [41] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+mirrorai-postgres  | 2026-04-01 14:32:14.357 UTC [44] LOG:  database system was shut down at 2026-04-01 14:32:14 UTC
+mirrorai-postgres  | 2026-04-01 14:32:14.363 UTC [41] LOG:  database system is ready to accept connections
+mirrorai-postgres  |  done
+mirrorai-postgres  | server started
+mirrorai-postgres  | CREATE DATABASE
+mirrorai-postgres  | 
+mirrorai-postgres  | 
+mirrorai-postgres  | /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+mirrorai-postgres  | 
+mirrorai-postgres  | waiting for server to shut down....2026-04-01 14:32:14.517 UTC [41] LOG:  received fast shutdown request
+mirrorai-postgres  | 2026-04-01 14:32:14.519 UTC [41] LOG:  aborting any active transactions
+mirrorai-postgres  | 2026-04-01 14:32:14.522 UTC [41] LOG:  background worker "logical replication launcher" (PID 47) exited with exit code 1
+mirrorai-postgres  | 2026-04-01 14:32:14.523 UTC [42] LOG:  shutting down
+mirrorai-postgres  | 2026-04-01 14:32:14.525 UTC [42] LOG:  checkpoint starting: shutdown immediate
+mirrorai-postgres  | 2026-04-01 14:32:14.558 UTC [42] LOG:  checkpoint complete: wrote 926 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.019 s, sync=0.008 s, total=0.036 s; sync files=301, longest=0.003 s, average=0.001 s; distance=4272 kB, estimate=4272 kB; lsn=0/191E938, redo lsn=0/191E938
+mirrorai-postgres  | 2026-04-01 14:32:14.568 UTC [41] LOG:  database system is shut down
+mirrorai-postgres  |  done
+mirrorai-postgres  | server stopped
+mirrorai-postgres  | 
+mirrorai-postgres  | PostgreSQL init process complete; ready for start up.
+mirrorai-postgres  | 
+mirrorai-postgres  | 2026-04-01 14:32:14.644 UTC [1] LOG:  starting PostgreSQL 16.13 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+mirrorai-postgres  | 2026-04-01 14:32:14.644 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+mirrorai-postgres  | 2026-04-01 14:32:14.644 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+mirrorai-postgres  | 2026-04-01 14:32:14.648 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+mirrorai-postgres  | 2026-04-01 14:32:14.655 UTC [57] LOG:  database system was shut down at 2026-04-01 14:32:14 UTC
+mirrorai-postgres  | 2026-04-01 14:32:14.661 UTC [1] LOG:  database system is ready to accept connections
+mirrorai-postgres  | 2026-04-01 14:37:14.754 UTC [55] LOG:  checkpoint starting: time
+mirrorai-postgres  | 2026-04-01 14:37:18.981 UTC [55] LOG:  checkpoint complete: wrote 45 buffers (0.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=4.210 s, sync=0.005 s, total=4.228 s; sync files=12, longest=0.003 s, average=0.001 s; distance=260 kB, estimate=260 kB; lsn=0/195FC18, redo lsn=0/195FBE0

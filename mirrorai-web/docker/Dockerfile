@@ -22,6 +22,10 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/node_modules/.prisma ./node_modules/.prisma
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
+# 构建时需要 dummy 环境变量（Prisma 和 NextAuth 在构建期间不会真正连接）
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+ENV NEXTAUTH_SECRET="build-time-placeholder-secret"
+ENV NEXTAUTH_URL="http://localhost:3002"
 RUN npm run build
 
 # 生产阶段

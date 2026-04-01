@@ -1,0 +1,30 @@
+#15 67.49     at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:877:12)
+#15 67.49     at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:281:20)
+#15 67.49     at module evaluation (.next/server/chunks/[root-of-the-server]__0az8bda._.js:1:2117)
+#15 67.49     at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:853:9)
+#15 67.49 
+#15 67.49 > Build error occurred
+#15 67.50 Error: Failed to collect page data for /api/addresses
+#15 67.50     at ignore-listed frames {
+#15 67.50   type: 'Error'
+#15 67.50 }
+#15 67.56 npm notice
+#15 67.56 npm notice New major version of npm available! 10.8.2 -> 11.12.1
+#15 67.56 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.12.1
+#15 67.56 npm notice To update run: npm install -g npm@11.12.1
+#15 67.56 npm notice
+#15 ERROR: process "/bin/sh -c npm run build" did not complete successfully: exit code: 1
+------
+ > [app builder 5/5] RUN npm run build:
+67.49 > Build error occurred
+67.50 Error: Failed to collect page data for /api/addresses
+67.50     at ignore-listed frames {
+67.50   type: 'Error'
+67.50 }
+67.56 npm notice
+67.56 npm notice New major version of npm available! 10.8.2 -> 11.12.1
+67.56 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.12.1
+67.56 npm notice To update run: npm install -g npm@11.12.1
+67.56 npm notice
+------
+failed to solve: process "/bin/sh -c npm run build" did not complete successfully: exit code: 1
