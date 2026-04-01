@@ -569,7 +569,7 @@ async def delete_staff(
 
 @router.get("/feature-flags")
 async def get_feature_flags(
-    admin: User = Depends(get_current_admin),
+    admin: User = Depends(get_superuser),
     db: AsyncSession = Depends(get_db),
 ):
     """获取功能开关配置"""
@@ -598,7 +598,7 @@ async def get_feature_flags(
 async def update_feature_flag(
     feature_id: str,
     body: dict,
-    admin: User = Depends(get_current_admin),
+    admin: User = Depends(get_superuser),
     db: AsyncSession = Depends(get_db),
 ):
     """更新单个功能开关"""
