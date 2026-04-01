@@ -70,7 +70,16 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' http://localhost:8000; font-src 'self' data:; frame-ancestors 'self';",
+            value: [
+              "default-src 'self';",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com;",
+              "style-src 'self' 'unsafe-inline';",
+              "img-src 'self' data: https:;",
+              "connect-src 'self' https://scdc.cloud https://static.cloudflareinsights.com;",
+              "font-src 'self' data:;",
+              "manifest-src 'self';",
+              "frame-ancestors 'self';",
+            ].join(" "),
           },
         ],
       },

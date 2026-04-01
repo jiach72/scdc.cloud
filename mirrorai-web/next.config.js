@@ -15,7 +15,7 @@ const nextConfig = {
           // CSP: 'unsafe-inline' and 'unsafe-eval' are required for Next.js runtime
           // (inline scripts/styles for hydration, HMR, and third-party integrations).
           // For production hardening, consider nonce-based CSP with a custom _document.
-          { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; font-src 'self' data:; frame-ancestors 'none';" },
+          { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://static.cloudflareinsights.com; font-src 'self' data:; frame-ancestors 'none';" },
         ],
       },
       {
