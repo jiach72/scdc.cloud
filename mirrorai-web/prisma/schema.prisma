@@ -1,0 +1,282 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 用户
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  passwordHash    String
+  name            String?
+  avatar          String?
+  role            String    @default("user")
+  emailVerified   Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  accounts          Account[]
+  sessions          Session[]
+  agents            Agent[]
+  teamMembers       TeamMember[]
+  apiKeys           ApiKey[]
+  notifications     Notification[]
+  auditLogs         AuditLog[]
+  orders            Order[]
+  reviews           Review[]
+  pluginSubmissions PluginSubmission[]
+  alerts            Alert[]
+}
+
+// OAuth 账户
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+
+  @@unique([provider, providerAccountId])
+}
+
+// Session
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires      DateTime
+}
+
+// 团队
+model Team {
+  id        String       @id @default(cuid())
+  name      String
+  slug      String       @unique
+  createdAt DateTime     @default(now())
+  members   TeamMember[]
+  agents    Agent[]
+}
+
+// 团队成员
+model TeamMember {
+  id       String   @id @default(cuid())
+  teamId   String
+  team     Team     @relation(fields: [teamId], references: [id])
+  userId   String
+  user     User     @relation(fields: [userId], references: [id])
+  role     String   @default("member")
+  joinedAt DateTime @default(now())
+
+  @@unique([teamId, userId])
+}
+
+// Agent
+model Agent {
+  id               String    @id @default(cuid())
+  name             String
+  description      String?
+  framework        String?
+  frameworkVersion String?
+  model            String?
+  modelHash        String?
+  configHash       String?
+  toolManifestHash String?
+  status           String    @default("active")
+  userId           String
+  user             User      @relation(fields: [userId], references: [id])
+  teamId           String?
+  team             Team?     @relation(fields: [teamId], references: [id])
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  evaluations  Evaluation[]
+  certificates Certificate[]
+  heartbeats   Heartbeat[]
+  alerts       Alert[]
+  passports    Passport[]
+}
+
+// Agent 护照
+model Passport {
+  id               String   @id @default(cuid())
+  agentId          String
+  agent            Agent    @relation(fields: [agentId], references: [id])
+  status           String   @default("draft")
+  framework        String?
+  modelHash        String?
+  configHash       String?
+  toolManifestHash String?
+  issuedAt         DateTime?
+  expiresAt        DateTime?
+  signature        String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+// 评测
+model Evaluation {
+  id                String    @id @default(cuid())
+  agentId           String
+  agent             Agent     @relation(fields: [agentId], references: [id])
+  type              String
+  status            String    @default("pending")
+  overallScore      Float?
+  securityScore     Float?
+  reliabilityScore  Float?
+  capabilityLevel   String?
+  securityLevel     String?
+  passedScenarios   Int?
+  totalScenarios    Int?
+  startedAt         DateTime?
+  completedAt       DateTime?
+  createdAt         DateTime  @default(now())
+
+  results     EvalResult[]
+  certificate Certificate?
+}
+
+// 评测结果明细
+model EvalResult {
+  id           String     @id @default(cuid())
+  evaluationId String
+  evaluation   Evaluation @relation(fields: [evaluationId], references: [id])
+  scenarioName String
+  scenarioType String
+  passed       Boolean
+  score        Float
+  details      String?
+  createdAt    DateTime   @default(now())
+}
+
+// 证书
+model Certificate {
+  id              String     @id @default(cuid())
+  agentId         String
+  agent           Agent      @relation(fields: [agentId], references: [id])
+  evaluationId    String     @unique
+  evaluation      Evaluation @relation(fields: [evaluationId], references: [id])
+  certNumber      String     @unique
+  status          String     @default("active")
+  capabilityLevel String?
+  securityLevel   String?
+  issuedAt        DateTime   @default(now())
+  expiresAt       DateTime
+  signature       String?
+  merkleRoot      String?
+}
+
+// 心跳
+model Heartbeat {
+  id        String   @id @default(cuid())
+  agentId   String
+  agent     Agent    @relation(fields: [agentId], references: [id])
+  status    String
+  latency   Float?
+  score     Float?
+  details   String?
+  createdAt DateTime @default(now())
+}
+
+// 告警
+model Alert {
+  id           String   @id @default(cuid())
+  agentId      String
+  agent        Agent    @relation(fields: [agentId], references: [id])
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  type         String
+  severity     String
+  message      String
+  acknowledged Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}
+
+// API Key
+model ApiKey {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  name       String
+  keyHash    String    @unique
+  prefix     String
+  lastUsedAt DateTime?
+  expiresAt  DateTime?
+  createdAt  DateTime  @default(now())
+}
+
+// 订阅/订单
+model Order {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  plan         String
+  status       String   @default("active")
+  stripeSubId  String?  @unique
+  stripeCustId String?
+  amount       Float
+  currency     String   @default("usd")
+  periodStart  DateTime
+  periodEnd    DateTime
+  createdAt    DateTime @default(now())
+}
+
+// 插件提交
+model PluginSubmission {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  name        String
+  description String
+  category    String
+  version     String
+  downloadUrl String
+  signature   String?
+  status      String   @default("pending")
+  reviewedAt  DateTime?
+  createdAt   DateTime @default(now())
+}
+
+// 通知
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// 审计日志
+model AuditLog {
+  id        String    @id @default(cuid())
+  userId    String?
+  user      User?     @relation(fields: [userId], references: [id])
+  action    String
+  resource  String
+  details   String?
+  ip        String?
+  createdAt DateTime  @default(now())
+}
+
+// 评价/反馈
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  rating    Int
+  content   String?
+  createdAt DateTime @default(now())
+}

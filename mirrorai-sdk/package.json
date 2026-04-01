@@ -1,0 +1,104 @@
+{
+  "name": "@mirrorai/blackbox",
+  "version": "0.3.0",
+  "description": "MirrorAI SDK — AI Agent Security Evaluation Framework with Real-time Protection",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./dist/src/index.js"
+    },
+    "./plugins": {
+      "types": "./dist/plugins/index.d.ts",
+      "default": "./dist/plugins/index.js"
+    },
+    "./plugins/openai": {
+      "types": "./dist/plugins/openai.d.ts",
+      "default": "./dist/plugins/openai.js"
+    },
+    "./plugins/langchain": {
+      "types": "./dist/plugins/langchain.d.ts",
+      "default": "./dist/plugins/langchain.js"
+    },
+    "./plugins/crewai": {
+      "types": "./dist/plugins/crewai.d.ts",
+      "default": "./dist/plugins/crewai.js"
+    },
+    "./plugins/custom": {
+      "types": "./dist/plugins/custom.d.ts",
+      "default": "./dist/plugins/custom.js"
+    }
+  },
+  "bin": {
+    "lobster": "./dist/cli/index.js",
+    "lobster-check": "dist/cli/check.js",
+    "lobster-report": "dist/cli/report.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "ts-node tests/suite.ts",
+    "demo": "ts-node tests/demo.ts",
+    "demo:plugins": "ts-node tests/plugins-demo.ts",
+    "check": "ts-node cli/check.ts",
+    "db:init": "ts-node migrations/run.ts init",
+    "db:seed": "ts-node migrations/run.ts seed",
+    "db:migrate": "ts-node migrations/run.ts all",
+    "db:reset": "ts-node migrations/run.ts reset",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "ai-agent",
+    "security",
+    "evaluation",
+    "blackbox",
+    "recording",
+    "guard",
+    "shield",
+    "gate",
+    "interceptor",
+    "llm-security",
+    "prompt-injection",
+    "agent-safety"
+  ],
+  "author": "MirrorAI",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mirrorai/blackbox-sdk"
+  },
+  "homepage": "https://mirrorai.run",
+  "bugs": {
+    "url": "https://github.com/mirrorai/blackbox-sdk/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^14.0.3",
+    "drizzle-orm": "^0.45.1",
+    "pg": "^8.20.0",
+    "tweetnacl": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.37",
+    "@types/pg": "^8.20.0",
+    "drizzle-kit": "^0.30.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "openai": ">=4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "openai": {
+      "optional": true
+    }
+  }
+}

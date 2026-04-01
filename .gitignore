@@ -1,0 +1,84 @@
+# 依赖和包管理器
+node_modules/
+.pnp
+.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js 编译产物
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# 环境变量与安全密钥 (极端重要)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*.cert
+
+# 日志、临时与工作区
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+lerna-debug.log*
+tmp/
+*.swp
+*.swo
+
+# IDE 与操作系统配置
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# 覆盖率和测试生成记录
+coverage/
+*.lcov
+
+# Agent 生成的中间脚本及自身环境
+.agent/
+fix_colors.mjs
+fix_colors.py
+nextjs-skills.txt
+docker-skills.txt
+n.txt
+d.txt
+
+# Vercel 与其它三方云平台
+.vercel/
+.netlify/
+
+# 数据库 (防泄露本地 SQLite 等)
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+*.db-journal
+
+# Python (用于后端的缓存)
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+env/
+.env/
+pip-log.txt
+pip-delete-this-directory.txt
